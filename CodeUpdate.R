@@ -1,6 +1,6 @@
 
 
-setwd("/Users/AyushOza/Documents/Edinburgh/StatisticalProgramming/SP-Assesment1") 
+setwd("/Users/sanik/SP-Assesment1") 
 a <-scan("1581-0.txt",what="character",skip=156) 
 n <-length(a) 
 a <-a[-((n-2909):n)] ## strip license
@@ -79,10 +79,13 @@ Thousand_No_words_freq <- No_words[No_words > 89] ##Imposes lower limit to gener
 
 print(length(Thousand_No_words_freq)) ##1000 words check
 
-Top_1000_words <- Unique_words[match(Thousand_No_words_freq, No_words)]
+b <- Unique_words[match(Thousand_No_words_freq, No_words)]
 
-print(Top_1000_words)
+print(b)
 
-
-
-
+com_txt <- match(New_text2, b)
+com_txt
+com_pairs <- rowSums(cbind(com_txt, subs = com_txt+1))
+com_pairs
+wo_na <- na.omit(com_pairs)
+wo_na
