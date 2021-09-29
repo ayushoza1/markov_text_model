@@ -67,5 +67,22 @@ split_punct <- function(x, y, z, l, m, n, o) {
 
 New_text <- split_punct(a, ",",".", ";", "!", ":", "?")
 
+New_text2 <- tolower(New_text) ##LowerCase all elements in bible text vector
+
+Unique_words <- unique(New_text2) ##Vector of all  unqiue words created
+
+z <- match(New_text2, Unique_words) ##What position of bible is in Unique words vector
+
+No_words <- tabulate(z) ##Frequency of bible text
+
+Thousand_No_words_freq <- No_words[No_words > 89] ##Imposes lower limit to generate only 1000 words
+
+print(length(Thousand_No_words_freq)) ##1000 words check
+
+Top_1000_words <- Unique_words[match(Thousand_No_words_freq, No_words)]
+
+print(Top_1000_words)
+
+
 
 
