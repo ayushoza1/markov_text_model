@@ -90,24 +90,22 @@ com_pairs
 no_na <- com_pairs[!is.na(com_pairs)] ##removes the NA values from the sum of rows
 no_na
 
-len_no_na <- length(no_na)/2 ##calculate the number of word pairs
+len_no_na <- length(no_na) ##calculate the number of word pairs
 
 A <- matrix(0:0,len_no_na,2) ##makes empty matrix with 2 columns and rows equal to number of word pairs
 A
 indx <- 1                    ##initializes index for word pairs
 
-for (i in 1:(len_no_na)){
-   while (indx < len_no_na) {    ##loop to insert word pairs from b to A matrix
-    j <- i
-    A[i,j] <- no_na[indx]
-    j <- j + 1
-    indx <- indx + 1
-    A[i,j] <- no_na[indx+1]
-    indx <- indx + 1
+while (indx < len_no_na+1){
+  for (i in 1:len_no_na) {    ##loop to insert word pair sums into A matrix
+     j <- 1
+     A[i,j] <- no_na[indx]
+     j <- 2
+     indx <- indx + 1
+     A[i,j] <- no_na[indx]
+     indx <- indx + 1
     }
 }
 A[1,1]
 A [1,2]
-A [3,1]
-A [2,2]
-no_na [4]
+A [1035527/2,2]
