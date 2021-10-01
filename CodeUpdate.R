@@ -117,8 +117,19 @@ for (k in 1:length(com_txt)) {
       A[q,r] <- A[q,r] + 1
     }
   }
-}
+
 
 A[1:10, 1:10]
+  
+RSum <- rowSums(A)      # calculating rowSum of A 
 
+Probabilities <- A/RSum # standardizing rows of A
+Probabilities[1:10, 1:10]
+
+ProbsSum <- rowSums(Probabilities)  # verifying for probability sum = 1
+ProbsSum
+
+NewProbSum <- ProbsSum    # removing unwanted NaNs
+NewProbSum[is.nan(NewProbSum)] <- 0
+NewProbSum
 
