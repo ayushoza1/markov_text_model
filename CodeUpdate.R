@@ -67,11 +67,11 @@ split_punct <- function(x, y, z, l, m, n, o) {
 
 New_text <- split_punct(a, ",",".", ";", "!", ":", "?")
 
-New_text2 <- tolower(New_text) ##LowerCase all elements in bible text vector
+low_text <- tolower(New_text) ##Lower Case all elements in bible text vector
 
-Unique_words <- unique(New_text2) ##Vector of all  unqiue words created
+Unique_words <- unique(low_text) ##Vector of all  unique words created
 
-z <- match(New_text2, Unique_words) ##What position of bible is in Unique words vector
+z <- match(low_text, Unique_words) ##What position of bible is in Unique words vector
 
 No_words <- tabulate(z) ##Frequency of bible text
 
@@ -83,9 +83,31 @@ b <- Unique_words[match(Thousand_No_words_freq, No_words)]
 
 print(b)
 
-com_txt <- match(New_text2, b)
+com_txt <- match(low_text, b)  ##matches lower case bible text with vector b to find indices of common words in bible text
 com_txt
-com_pairs <- rowSums(cbind(com_txt, subs = com_txt+1))
+com_pairs <- rowSums(cbind(com_txt, com_txt+1)) ##calculates sum of rows after creating 2 column matrix of indices of subsequent words
 com_pairs
-wo_na <- na.omit(com_pairs)
-wo_na
+no_na <- com_pairs[!is.na(com_pairs)] ##removes the NA values from the sum of rows
+no_na
+
+len_no_na <- length(no_na)/2 ##calculate the number of word pairs
+
+A <- matrix(0:0,len_no_na,2) ##makes empty matrix with 2 columns and rows equal to number of word pairs
+A
+indx <- 1                    ##initializes index for word pairs
+
+for (i in 1:(len_no_na)){
+   while (indx < len_no_na) {    ##loop to insert word pairs from b to A matrix
+    j <- i
+    A[i,j] <- no_na[indx]
+    j <- j + 1
+    indx <- indx + 1
+    A[i,j] <- no_na[indx+1]
+    indx <- indx + 1
+    }
+}
+A[1,1]
+A [1,2]
+A [3,1]
+A [2,2]
+no_na [4]
