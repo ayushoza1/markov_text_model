@@ -1,6 +1,6 @@
 
 
-setwd("/Users/sanik/SP-Assesment1") 
+setwd("/Users/AyushOza/Documents/Edinburgh/StatisticalProgramming/SP-Assesment1") 
 a <-scan("1581-0.txt",what="character",skip=156) 
 n <-length(a) 
 a <-a[-((n-2909):n)] ## strip license
@@ -84,28 +84,41 @@ b <- Unique_words[match(Thousand_No_words_freq, No_words)]
 print(b)
 
 com_txt <- match(low_text, b)  ##matches lower case bible text with vector b to find indices of common words in bible text
-com_txt
-com_pairs <- rowSums(cbind(com_txt, com_txt+1)) ##calculates sum of rows after creating 2 column matrix of indices of subsequent words
+
+com_txt_indx <- 1:length(com_txt) ##Creates an index of com_txt
+com_txt_shift <- rep(NA, length(com_txt))
+com_txt_shift[com_txt_indx] <- com_txt[com_txt_indx + 1] ##Creates a new vector where com_txt is shifted one space down
+com_txt_shift
+
+com_pairs_vector <- cbind(com_txt, com_txt_shift) ##Creates a new vector indexing subsequent words
+com_pairs_vector
+com_pairs <- rowSums(cbind(com_txt, com_txt_shift)) ##calculates sum of rows after creating 2 column matrix of indices of subsequent words
 com_pairs
 no_na <- com_pairs[!is.na(com_pairs)] ##removes the NA values from the sum of rows
 no_na
 
-len_no_na <- length(no_na) ##calculate the number of word pairs
+unique_no_na <- unique(no_na) #Keeps unique values
+unique_no_na
 
-A <- matrix(0:0,len_no_na,2) ##makes empty matrix with 2 columns and rows equal to number of word pairs
-A
-indx <- 1                    ##initializes index for word pairs
+len_no_na <- length(unique_no_na) ##calculate the number of unique word pairs
+len_no_na
 
-while (indx < len_no_na+1){
-  for (i in 1:len_no_na) {    ##loop to insert word pair sums into A matrix
-     j <- 1
-     A[i,j] <- no_na[indx]
-     j <- 2
-     indx <- indx + 1
-     A[i,j] <- no_na[indx]
-     indx <- indx + 1
+
+A <- matrix(0:0, len_no_na, len_no_na) #creates matrix 
+
+##Loop below to add one to each element of matrix where i,j shows up in text.
+
+for (k in 1:length(com_txt)) {
+  l <- 1
+  m <- 2
+  q <- com_pairs_vector[k,l]
+  r <- com_pairs_vector[k,m]
+    if (!is.na(com_pairs_vector[k,l]) & !is.na(com_pairs_vector[k,m])) {
+      A[q,r] <- A[q,r] + 1
     }
+  }
 }
-A[1,1]
-A [1,2]
-A [1035527/2,2]
+
+A[1:10, 1:10]
+
+
