@@ -119,6 +119,22 @@ for (k in 1:length(com_txt)) {
   }
 
 A[1:10, 1:10]
+  
+##Standardize rows of A[i, j] to be interpreted as probabiltiy that b[j] will follow b[i]
+
+RSum <- rowSums(A)      # calculating rowSum of A 
+
+Probabilities <- A/RSum # standardizing rows of A
+Probabilities[1:10, 1:10]
+
+ProbsSum <- rowSums(Probabilities)  # verifying for probability sum = 1
+ProbsSum
+
+NewProbSum <- ProbsSum    # removing unwanted NaNs
+NewProbSum[is.nan(NewProbSum)] <- 0
+NewProbSum
+
+##Simulate 50-word section from the model
 
 rdn_sample <- rep(0, 50)                 ##creates sample vector of length 50 with values 0 
 rdn_sample
@@ -134,4 +150,3 @@ rdn_sample[rdn_indx] <- sample.int((length(b)-50), size = 1, replace = F)   ##ge
 rdn_sample[rdn_indx] <- rdn_sample[rdn_indx] + rdn_sample_shift[rdn_indx]  ##creates vector of 50 indices of words after random one
 
 cat(b[rdn_sample], sep = " ")                            ##concatenates and print 50-word section from the model
-
