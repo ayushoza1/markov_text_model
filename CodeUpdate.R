@@ -143,9 +143,12 @@ Model_vector <- rep(0, 50)  ##creates sample vector of length 50 with values 0
 
 Model_vector[1] <- rdn_sampl
 
+row_of_a <- rdn_sampl
+
 for (i in 2:50) {
-  Row_probabilities <- Probabilities[,i]
+  Row_probabilities <- Probabilities[,row_of_a]
   Model_vector[i] <- match(max(Row_probabilities),Row_probabilities)
+  row_of_a <- match(max(Row_probabilities),Row_probabilities)
 }
 
 Word_vector <- b[Model_vector] 
