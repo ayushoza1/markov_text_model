@@ -1,6 +1,6 @@
 
 
-setwd("/Users/sanik/Desktop/SP-Assesment1") 
+setwd("/Users/AyushOza/Documents/Edinburgh/StatisticalProgramming/SP-Assesment1") 
 a <-scan("1581-0.txt",what="character",skip=156) 
 n <-length(a) 
 a <-a[-((n-2909):n)] ## strip license
@@ -120,12 +120,13 @@ for (k in 1:length(com_txt)) {
 
 A[1:10, 1:10]
   
-##Standardize rows of A[i, j] to be interpreted as probabiltiy that b[j] will follow b[i]
+##Standardize rows of A[i, j] to be interpreted as probability that b[j] will follow b[i]
 
 RSum <- rowSums(A)      # calculating rowSum of A 
 
 Probabilities <- A/RSum # standardizing rows of A
 Probabilities[1:10, 1:10]
+Probabilities[is.nan(Probabilities)] <- 0
 
 ProbsSum <- rowSums(Probabilities)  # verifying for probability sum = 1
 ProbsSum
@@ -136,17 +137,21 @@ NewProbSum
 
 ##Simulate 50-word section from the model
 
-rdn_sample <- rep(0, 50)                 ##creates sample vector of length 50 with values 0 
-rdn_sample
+rdn_sampl <- sample.int((length(b)), size = 1)   ##generates random integer index from b
 
-rdn_indx <- 1:length(rdn_sample)                ##creates an index of rdn_sample
+Model_vector <- rep(0, 50)  ##creates sample vector of length 50 with values 0 
 
-rdn_sample_shift <- rep(0, length(rdn_sample))              
-rdn_sample_shift[rdn_indx + 1] <- rdn_sample[rdn_indx]    ##creates new vector where rdn_sample is shifted one place to the right
-rdn_sample_shift
+Model_vector[1] <- rdn_sampl
 
-rdn_sample[rdn_indx] <- sample.int((length(b)-50), size = 1, replace = F)   ##generates random integer index from the model 
+for (i in 2:50) {
+  Row_probabilities <- Probabilities[,i]
+  Model_vector[i] <- match(max(Row_probabilities),Row_probabilities)
+}
 
-rdn_sample[rdn_indx] <- rdn_sample[rdn_indx] + rdn_sample_shift[rdn_indx]  ##creates vector of 50 indices of words after random one
+Word_vector <- b[Model_vector] 
 
-cat(b[rdn_sample], sep = " ")                            ##concatenates and print 50-word section from the model
+Word_vector
+
+
+
+
