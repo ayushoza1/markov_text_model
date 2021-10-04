@@ -81,8 +81,6 @@ print(length(Thousand_No_words_freq)) ##1000 words check
 
 b <- Unique_words[match(Thousand_No_words_freq, No_words)]
 
-print(b)
-
 com_txt <- match(low_text, b)  ##matches lower case bible text with vector b to find indices of common words in bible text
 
 com_txt_indx <- 1:length(com_txt) ##Creates an index of com_txt
@@ -104,7 +102,7 @@ len_no_na <- length(unique_no_na) ##calculate the number of unique word pairs
 len_no_na
 
 
-A <- matrix(0:0, len_no_na, len_no_na) #creates matrix 
+A <- matrix(0:0, length(b), length(b)) #creates matrix 
 
 ##Loop below to add one to each element of matrix where i,j shows up in text.
 
@@ -118,7 +116,7 @@ for (k in 1:length(com_txt)) {
     }
   }
 
-A[1:10, 1:10]
+A[1:10,1:10]
   
 ##Standardize rows of A[i, j] to be interpreted as probability that b[j] will follow b[i]
 
@@ -126,7 +124,7 @@ RSum <- rowSums(A)      # calculating rowSum of A
 
 Probabilities <- A/RSum # standardizing rows of A
 Probabilities[1:10, 1:10]
-Probabilities[is.nan(Probabilities)] <- 0
+Probabilities[is.nan(Probabilities)] <- 1/len_no_na
 
 ProbsSum <- rowSums(Probabilities)  # verifying for probability sum = 1
 ProbsSum
@@ -146,15 +144,14 @@ Model_vector[1] <- rdn_sampl
 row_of_a <- rdn_sampl
 
 for (i in 2:50) {
-  Row_probabilities <- Probabilities[,row_of_a]
-  Model_vector[i] <- match(max(Row_probabilities),Row_probabilities)
-  row_of_a <- match(max(Row_probabilities),Row_probabilities)
+  Row_probabilities <- Probabilities[row_of_a,]
+  Model_vector[i] <- sample(1:length(b), 1, replace = FALSE, prob = Row_probabilities)
+  row_of_a <- Model_vector[i]
 }
 
 Word_vector <- b[Model_vector] 
 
 Word_vector
 
-
-
+?sample
 
