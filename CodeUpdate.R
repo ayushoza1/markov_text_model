@@ -153,5 +153,54 @@ Word_vector <- b[Model_vector]
 
 Word_vector
 
-?sample
+##Attempt at part 9 
+
+Unique_words_cap <- unique(New_text)
+Unique_words_cap
+
+Capital_check <- rep("", length(Unique_words_cap))
+
+for (i in 1:length(Unique_words_cap)) {
+  if (substr(Unique_words_cap[i], 1, 1) %in% LETTERS) { 
+    Capital_check[i] <- "Yes" 
+  } else { 
+    Capital_check[i] <- "No"
+  }
+}
+
+Unique_words_cap <- Unique_words_cap[Capital_check == "Yes"]
+
+z_caps <- match(New_text, Unique_words_cap)
+
+No_words_caps <- tabulate(z_caps)
+
+match_entries <- match(tolower(Unique_words_cap), Unique_words)
+
+Most_likely_caps <- rep("", length(Unique_words_cap))
+
+for (i in 1:length(Unique_words_cap)) {
+  if (No_words_caps[i] > (No_words[match_entries[i]] - No_words_caps[i])) {
+    Most_likely_caps[i] <- "Yes"
+  } else {
+    Most_likely_caps[i] <- "No"
+  }
+}
+
+Unique_words_cap_updated <- Unique_words_cap[Most_likely_caps == "Yes"]
+
+matched_sample <- match(Word_vector, tolower(Unique_words_cap_updated))
+
+Word_vector_caps <- Word_vector
+
+for (i in 1:length(Word_vector)) {
+  if (!is.na(matched_sample[i])) {
+    Word_vector_caps[i] <- Unique_words_cap_updated[matched_sample[i]]
+  }
+}
+
+Word_vector_caps <- Word_vector_caps[!is.na((Word_vector_caps))]
+
+
+Word_vector
+Word_vector_caps
 
