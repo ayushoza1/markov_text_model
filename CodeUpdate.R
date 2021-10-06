@@ -71,9 +71,9 @@ low_text <- tolower(New_text) ##Lower Case all elements in bible text vector
 
 Unique_words <- unique(low_text) ##Vector of all  unique words created
 
-z <- match(low_text, Unique_words) ##What position of bible is in Unique words vector
+z <- match(low_text, Unique_words) ##Position of bible text in unique words vector
 
-No_words <- tabulate(z) ##Frequency of bible text
+No_words <- tabulate(z) ##Frequency of words in bible text
 
 Thousand_No_words_freq <- No_words[No_words > 89] ##Imposes lower limit to generate only 1000 words
 
@@ -86,21 +86,17 @@ com_txt <- match(low_text, b)  ##matches lower case bible text with vector b to 
 com_txt_indx <- 1:length(com_txt) ##Creates an index of com_txt
 com_txt_shift <- rep(NA, length(com_txt))
 com_txt_shift[com_txt_indx] <- com_txt[com_txt_indx + 1] ##Creates a new vector where com_txt is shifted one space down
-com_txt_shift
 
 com_pairs_vector <- cbind(com_txt, com_txt_shift) ##Creates a new vector indexing subsequent words
 com_pairs_vector
 com_pairs <- rowSums(cbind(com_txt, com_txt_shift)) ##calculates sum of rows after creating 2 column matrix of indices of subsequent words
-com_pairs
+
 no_na <- com_pairs[!is.na(com_pairs)] ##removes the NA values from the sum of rows
-no_na
+
 
 unique_no_na <- unique(no_na) #Keeps unique values
-unique_no_na
 
 len_no_na <- length(unique_no_na) ##calculate the number of unique word pairs
-len_no_na
-
 
 A <- matrix(0:0, length(b), length(b)) #creates matrix 
 
@@ -115,23 +111,16 @@ for (k in 1:length(com_txt)) {
       A[q,r] <- A[q,r] + 1
     }
   }
-
-A[1:10,1:10]
   
 ##Standardize rows of A[i, j] to be interpreted as probability that b[j] will follow b[i]
 
 RSum <- rowSums(A)      # calculating rowSum of A 
 
 Probabilities <- A/RSum # standardizing rows of A
-Probabilities[1:10, 1:10]
 Probabilities[is.nan(Probabilities)] <- 1/length(b)
   
 ProbsSum <- rowSums(Probabilities)  # verifying for probability sum = 1
-ProbsSum
 
-NewProbSum <- ProbsSum    # removing unwanted NaNs
-NewProbSum[is.nan(NewProbSum)] <- 0
-NewProbSum
 
 ##Simulate 50-word section from the model
 
@@ -155,10 +144,11 @@ Word_vector <- b[Model_vector] ##creates a new vector which has words, rather th
 
 ##Replace most frequent capitalized words
 
-Unique_words_cap <- unique(New_text)
-Unique_words_cap
+Unique_words_cap <- unique(New_text) #Generate list of new unique words with capitalized words
 
-Capital_check <- rep("", length(Unique_words_cap))
+Capital_check <- rep("", length(Unique_words_cap)) #Initiate vector determining if words are capitalized
+
+#Loop through all unique words searching for capitalized words by seeing if first letter is in LETTER vector
 
 for (i in 1:length(Unique_words_cap)) {
   if (substr(Unique_words_cap[i], 1, 1) %in% LETTERS) { 
@@ -168,15 +158,17 @@ for (i in 1:length(Unique_words_cap)) {
   }
 }
 
-Unique_words_cap <- Unique_words_cap[Capital_check == "Yes"]
+Unique_words_cap <- Unique_words_cap[Capital_check == "Yes"] ##Strip out non-capitalized words
 
-z_caps <- match(New_text, Unique_words_cap)
+z_caps <- match(New_text, Unique_words_cap) ##Position of bible text in unique words vector
 
-No_words_caps <- tabulate(z_caps)
+No_words_caps <- tabulate(z_caps) ##Frequency of Capitalized words in bible text
 
-match_entries <- match(tolower(Unique_words_cap), Unique_words)
+match_entries <- match(tolower(Unique_words_cap), Unique_words) ##Position of capitalized word in unique capitalized words vector to the the coressponding unique words vector
 
-Most_likely_caps <- rep("", length(Unique_words_cap))
+Most_likely_caps <- rep("", length(Unique_words_cap)) #Initial vector determining if the capitalized word occurs more times than coressponding non-capitalized word
+
+##Loop through each capitalized word checking if the frequency is greater than the non-capitalized counterpart
 
 for (i in 1:length(Unique_words_cap)) {
   if (No_words_caps[i] > (No_words[match_entries[i]] - No_words_caps[i])) {
@@ -186,11 +178,13 @@ for (i in 1:length(Unique_words_cap)) {
   }
 }
 
-Unique_words_cap_updated <- Unique_words_cap[Most_likely_caps == "Yes"]
+Unique_words_cap_updated <- Unique_words_cap[Most_likely_caps == "Yes"] ##Strip all words that occur more in lower case
 
-matched_sample <- match(Word_vector, tolower(Unique_words_cap_updated))
+matched_sample <- match(Word_vector, tolower(Unique_words_cap_updated)) ##Check if any words in our 50 word sample occur in the most frequently occuring capitals list
 
-Word_vector_caps <- Word_vector
+Word_vector_caps <- Word_vector ##Initiate capitalized sample vector
+
+##Loop to replace all words that were matched in the capitalized list with 
 
 for (i in 1:length(Word_vector)) {
   if (!is.na(matched_sample[i])) {
@@ -198,9 +192,7 @@ for (i in 1:length(Word_vector)) {
   }
 }
 
-Word_vector_caps <- Word_vector_caps[!is.na((Word_vector_caps))]
 
-
-Word_vector
-Word_vector_caps
+cat(Word_vector)
+cat(Word_vector_caps)
 
