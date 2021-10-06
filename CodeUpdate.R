@@ -124,8 +124,8 @@ RSum <- rowSums(A)      # calculating rowSum of A
 
 Probabilities <- A/RSum # standardizing rows of A
 Probabilities[1:10, 1:10]
-Probabilities[is.nan(Probabilities)] <- 1/len_no_na
-
+Probabilities[is.nan(Probabilities)] <- 1/length(b)
+  
 ProbsSum <- rowSums(Probabilities)  # verifying for probability sum = 1
 ProbsSum
 
@@ -137,11 +137,13 @@ NewProbSum
 
 rdn_sampl <- sample.int((length(b)), size = 1)   ##generates random integer index from b
 
-Model_vector <- rep(0, 50)  ##creates sample vector of length 50 with values 0 
+Model_vector <- rep(0, 50)  ##Initiates sample index vector of length 50 with values 0 
 
-Model_vector[1] <- rdn_sampl
+Model_vector[1] <- rdn_sampl ##Inputs the index of first word into sample index vector
 
-row_of_a <- rdn_sampl
+row_of_a <- rdn_sampl ##Initiates first row of matrix a for sample to take s probability distribution
+
+##Loop to cycle through matrix A, picking the row of a certain word and taking the next word based on the probbaility distribution from the row
 
 for (i in 2:50) {
   Row_probabilities <- Probabilities[row_of_a,]
@@ -149,11 +151,9 @@ for (i in 2:50) {
   row_of_a <- Model_vector[i]
 }
 
-Word_vector <- b[Model_vector] 
+Word_vector <- b[Model_vector] ##creates a new vector which has words, rather than index of words
 
-Word_vector
-
-##Attempt at part 9 
+##Replace most frequent capitalized words
 
 Unique_words_cap <- unique(New_text)
 Unique_words_cap
