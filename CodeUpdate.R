@@ -83,7 +83,6 @@ split_punct <- function(x, y, z, l, m, n, o) {
 ## The stated punctuation marks were passed as follows y = ',' z = '.'  l = ';' m = '!' n = ':' and o = '?'
 
 New_text <- split_punct(a, ",",".", ";", "!", ":", "?")
-print(New_text)
 
 ## New_text holds the output for 5 with words and punctuation marks separated.
 
