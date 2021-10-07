@@ -112,7 +112,6 @@ Thousand_No_words_freq <- No_words[No_words > 89] 			## Imposes lower limit to g
 ## 6.(e) A vector 'b' of 1000 most frequently occurring words was created. 
 
 b <- Unique_words[match(Thousand_No_words_freq, No_words)]
-print(b)
 
 ## 7. Below steps were all implemented to create a matrix 'A' as required.
 ## 7.(a) 'match' was used to find the frequently occuring words from 'b' in lower case text. 
@@ -157,9 +156,6 @@ for (k in 1:length(com_txt)) {
   }
   
 ## Matrix 'A' created. 
-## Use this line to print(A). 
-
-print(A[1:10, 1:10])
 
 ## 7.(e) Below lines of code were implemented to standardize the rows of matrix 'A'. 
 ## Standardize rows of A[i, j] to be interpreted as probability that b[j] will follow b[i]. 
@@ -251,6 +247,7 @@ for (i in 1:length(Word_vector)) {
 ## Printing desired outputs.
 
 cat(Word_vector)
+
 cat(Word_vector_caps)
 
 ## End of implementation of the model.
